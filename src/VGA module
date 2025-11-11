@@ -24,3 +24,18 @@ module vga(
 	   output vs
 	   );
 
+   assign r0 = red;
+   assign r1 = red;
+   assign r2 = red;
+   assign r3 = red;
+   assign b0 = blu;
+   assign b1 = blu;
+   assign b2 = blu;
+   assign b3 = blu;
+   assign g0 = grn;
+   assign g1 = grn;
+   assign g2 = grn;
+   assign g3 = grn;
+   assign hs = !hs_out;
+   assign vs = !vs_out;
+
