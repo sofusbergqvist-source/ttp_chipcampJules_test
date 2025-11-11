@@ -4,6 +4,31 @@
  */
 
 `default_nettype none
+module vga(
+	   input  clk,
+	   input  rst,
+           input  XXXXX
+           input  XXXXX
+           input  XXXXX
+           input  XXXXX
+           input  XXXXX
+           input  XXXXX
+           input  XXXXX
+	   output r0,
+	   output r1,
+	   output r2,
+	   output r3,
+	   output g0,
+	   output g1,
+	   output g2,
+	   output g3,
+	   output b0,
+	   output b1,
+	   output b2,
+	   output b3,
+	   output hs,
+	   output vs
+	   );
 
 module tt_um_WillyJules_chipbootcamp (
     input  wire [7:0] ui_in,    // Dedicated inputs
