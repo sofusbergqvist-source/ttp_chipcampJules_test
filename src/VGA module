@@ -1,22 +1,22 @@
 //============================================================
-// VGA_TOP.v
-// Self-contained VGA generator module with 12-bit RGB+position output
-// Resolution: 640x480 @ 60Hz (25 MHz pixel clock)
+// VGA Module.v
+// VGA generator with 12-bit RGB+position output
+// Highlights one pixel if it matches a stored register coordinate
 //============================================================
 
 `timescale 1ns / 1ps
 
-module VGA_TOP (
+module VGA (
     input  wire clk_pixel,    // 25 MHz pixel clock
     input  wire reset_n,      // active-low reset
     output reg  hsync,        // VGA horizontal sync
     output reg  vsync,        // VGA vertical sync
     output wire visible,      // high when inside visible region
-    output wire [11:0] data_out // 12-bit bus: RGB + location info
+    output wire [11:0] data_out // 12-bit bus: RGB + position
 );
 
     //------------------------------------------------------------
-    // VGA timing parameters (640x480 @ 60Hz)
+    // VGA timing parameters
     //------------------------------------------------------------
     localparam H_VISIBLE      = 640;
     localparam H_FRONT_PORCH  = 16;
@@ -37,7 +37,7 @@ module VGA_TOP (
     reg [11:0] v_count = 0;
 
     //------------------------------------------------------------
-    // Generate VGA timing
+    // Sync pulse generation
     //------------------------------------------------------------
     always @(posedge clk_pixel or negedge reset_n) begin
         if (!reset_n) begin
@@ -75,29 +75,46 @@ module VGA_TOP (
     end
 
     //------------------------------------------------------------
-    // Visible area and pixel coordinates
+    // Visible area coordinates
     //------------------------------------------------------------
     wire [9:0] x = (h_count < H_VISIBLE) ? h_count[9:0] : 10'd0;
     wire [8:0] y = (v_count < V_VISIBLE) ? v_count[8:0] : 9'd0;
     assign visible = (h_count < H_VISIBLE) && (v_count < V_VISIBLE);
 
     //------------------------------------------------------------
-    // Simple test pattern RGB generation
+    // Stored pixel register (the pixel to highlight)
     //------------------------------------------------------------
-    wire [7:0] rgb8;
-    assign rgb8[7:5] = x[9:7];            // Red (3 bits)
-    assign rgb8[4:2] = y[8:6];            // Green (3 bits)
-    assign rgb8[1:0] = x[6:5] ^ y[5:4];   // Blue (2 bits)
+    // Example: fixed coordinates, but you could load these dynamically
+    reg [9:0] reg_x = 320;  // middle of screen
+    reg [8:0] reg_y = 240;
 
     //------------------------------------------------------------
-    // Pack RGB + position into 12-bit output
+    // RGB color generation
     //------------------------------------------------------------
-    // Default packing (12 pins total):
-    // data_out[11:4] = RGB (8 bits)
-    // data_out[3:2]  = X[9:8]  (2 bits coarse X)
-    // data_out[1:0]  = Y[8:7]  (2 bits coarse Y)
+    wire [7:0] rgb_normal;
+    wire [7:0] rgb_highlight;
+    reg  [7:0] rgb_final;
+
+    // Normal pattern (test background)
+    assign rgb_normal[7:5] = x[9:7];             // Red
+    assign rgb_normal[4:2] = y[8:6];             // Green
+    assign rgb_normal[1:0] = x[6:5] ^ y[5:4];    // Blue
+
+    // Highlight color (bright red)
+    assign rgb_highlight = 8'b1110_0000;  // R=111, G=000, B=00
+
+    // Choose color: highlight if current pixel == saved coordinate
+    always @(*) begin
+        if (visible && (x == reg_x) && (y == reg_y))
+            rgb_final = rgb_highlight;
+        else
+            rgb_final = rgb_normal;
+    end
+
     //------------------------------------------------------------
-    assign data_out[11:4] = rgb8;
+    // Pack RGB + position into 12-bit bus
+    //------------------------------------------------------------
+    assign data_out[11:4] = rgb_final;
     assign data_out[3:2]  = x[9:8];
     assign data_out[1:0]  = y[8:7];
 
