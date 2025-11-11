@@ -2,6 +2,31 @@
  * Copyright (c) 2024 Your Name
  * SPDX-License-Identifier: Apache-2.0
  */
+module vga(
+	   input  clk,
+	   input  rst,
+           input  left_up,
+           input  left_down,
+           input  right_up,
+           input  right_down,
+           input  score_reset,
+           input  speed_lsb,
+           input  speed_msb,
+	   output r0,
+	   output r1,
+	   output r2,
+	   output r3,
+	   output g0,
+	   output g1,
+	   output g2,
+	   output g3,
+	   output b0,
+	   output b1,
+	   output b2,
+	   output b3,
+	   output hs,
+	   output vs
+	   );
 
 `default_nettype none
 
