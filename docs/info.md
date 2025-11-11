@@ -9,7 +9,7 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-urm--- i think it does nothing....æ
+a simple 3d render using bresenhams algorithm
 
 ## How to test
 
