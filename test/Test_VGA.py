@@ -2,9 +2,8 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles
 
-
 @cocotb.test()
-async def test_VGA(dut):
+async def Test_VGA(dut):
     """Basic VGA timing test"""
     dut._log.info("Starting VGA module test")
 

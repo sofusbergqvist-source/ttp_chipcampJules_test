@@ -1,0 +1,31 @@
+test/test_VGA.py
+import cocotb
+from cocotb.regression import TestFactory
+from cocotb.regression import TestCase
+
+@cocotb.coroutine
+def test_vga(dut):
+    assert True
+
+tf = TestFactory(test_vga)
+tf.generate_tests()
+
+test/Makefile
+COCOTB_TEST_MODULES=test_VGA
+COCOTB_TESTCASE=
+COCOTB_TEST_FILTER=
+COCOTB_TOPLEVEL=VGA
+TOPLEVEL_LANG=verilog
+
+all: results.xml
+
+results.xml: sim_build/rtl/sim.vvp
+	@echo "Running simulation"
+	COCOTB_TEST_MODULES=$(COCOTB_TEST_MODULES) COCOTB_TESTCASE=$(COCOTB_TESTCASE) COCOTB_TEST_FILTER=$(COCOTB_TEST_FILTER) COCOTB_TOPLEVEL=$(COCOTB_TOPLEVEL) TOPLEVEL_LANG=$(TOPLEVEL_LANG) vvp -M $(COCOTB_LIB) -m libcocotbvpi_icarus sim_build/rtl/sim.vvp -none
+
+sim_build/rtl/sim.vvp: sim_build/rtl/cmds.f
+	@echo "Building simulation"
+	iverilog -o $@ -s $(COCOTB_TOPLEVEL) -g2012 -I$(SRC_DIR) -f $< $(SRC_DIR)/VGA_Module.v
+
+clean:
+	rm -f results.xml sim_build/rtl/sim.vvp

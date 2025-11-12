@@ -1,6 +1,6 @@
 //============================================================
 // VGA Module.v
-// VGA generator with 12-bit RGB+position output
+// VGA generator with 12-bit RGB+position outputs
 // Highlights one pixel if it matches a stored register coordinates
 //============================================================
 
@@ -11,7 +11,7 @@ module VGA (
     input  wire reset_n,      // active-low reset
     output reg  hsync,        // VGA horizontal sync
     output reg  vsync,        // VGA vertical sync
-    output wire visible,      // high when inside visible region
+    output wire visible,      // high when inside visible regions
     output wire [11:0] data_out // 12-bit bus: RGB + position
 );
 
@@ -85,7 +85,7 @@ module VGA (
     // Stored pixel register (the pixel to highlight)
     //------------------------------------------------------------
     // Example: fixed coordinates, but you could load these dynamically
-    reg [9:0] reg_x = 320;  // middle of screen
+    reg [9:0] reg_x = 320;  // middle of screens
     reg [8:0] reg_y = 240;
 
     //------------------------------------------------------------
