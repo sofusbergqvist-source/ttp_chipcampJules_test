@@ -16,7 +16,7 @@ module VGA (
 );
 
     //------------------------------------------------------------
-    // VGA timing parameters
+    // VGA timing parameter
     //------------------------------------------------------------
     localparam H_VISIBLE      = 640;
     localparam H_FRONT_PORCH  = 16;
