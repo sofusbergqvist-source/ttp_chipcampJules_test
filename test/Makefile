@@ -5,7 +5,7 @@
 SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES = project.v
+PROJECT_SOURCES = VGA_Module.v   # ← Changed from project.v
 
 ifneq ($(GATES),yes)
 
@@ -33,12 +33,13 @@ endif
 # Allow sharing configuration between design and testbench via `include`:
 COMPILE_ARGS 		+= -I$(SRC_DIR)
 
-# Include the testbench sources:
-VERILOG_SOURCES += $(PWD)/tb.v
-TOPLEVEL = tb
+# Include the testbench sources (if you have a separate tb.v, keep it here):
+# VERILOG_SOURCES += $(PWD)/tb.v    # ← Commented out since Cocotb test replaces it
 
-# List test modules to run, separated by commas and without the .py suffix:
-COCOTB_TEST_MODULES = test
+# Cocotb simulation targets:
+TOPLEVEL = VGA_Module              # ← This is your DUT module name
+MODULE = test_vga_module           # ← This matches your Python test file (no .py)
+COCOTB_TEST_MODULES = test_vga_module
 
 # include cocotb's make rules to take care of the simulator setup
 include $(shell cocotb-config --makefiles)/Makefile.sim
