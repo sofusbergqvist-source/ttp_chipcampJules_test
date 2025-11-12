@@ -7,7 +7,7 @@
 `timescale 1ns / 1ps
 
 module VGA (
-    input  wire clk_pixel,    // 25 MHz pixel clocks
+    input  wire clk_pixel,    // 25 MHz pixel clock
     input  wire reset_n,      // active-low reset
     output reg  hsync,        // VGA horizontal sync
     output reg  vsync,        // VGA vertical sync
